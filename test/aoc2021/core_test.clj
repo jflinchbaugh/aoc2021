@@ -2,6 +2,12 @@
   (:require [clojure.test :refer :all]
             [aoc2021.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest test-parse-int
+  (testing "parse-int"
+    (is (= 1 (parse-int "1")))
+    (is (= 2 (parse-int "10" 2)))))
+
+(deftest test-parse-long
+  (testing "parse-long"
+    (is (= 1 (parse-long "1")))
+    (is (= 2 (parse-long "10" 2)))))
