@@ -13,6 +13,7 @@
    (Long/parseLong i radix)))
 
 (defn avg [coll]
-  (/ (reduce + coll) (count coll)))
+  (when (not (empty? coll))
+    (/ (reduce + coll) (count coll))))
 
 (defn abs [n] (Math/abs n))
