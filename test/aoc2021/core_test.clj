@@ -22,3 +22,7 @@
     (is (= 2 (avg [1 2 3])))
     (is (= 2 (avg [2])))
     (is (= nil (avg [])))))
+
+(deftest test-file->lines
+  (testing "file->lines"
+    (is (= ["1" "2"] (file->lines "test/aoc2021/file.txt")))))

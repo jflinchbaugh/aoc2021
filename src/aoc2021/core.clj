@@ -1,4 +1,5 @@
-(ns aoc2021.core)
+(ns aoc2021.core
+  (:require [clojure.string :as str]))
 
 (defn parse-int
   ([i]
@@ -17,3 +18,10 @@
     (/ (reduce + coll) (count coll))))
 
 (defn abs [n] (Math/abs n))
+
+(defn file->lines [file-name]
+  (->> file-name
+    slurp
+    str/trim
+    str/split-lines
+    (map str/trim)))
