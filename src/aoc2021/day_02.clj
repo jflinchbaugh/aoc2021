@@ -6,13 +6,13 @@
   "turn [dir dist] into an [x y] offset"
   [dir dist]
   (case dir
-    "forward" [dist 0]
-    "up" [0, (* -1 dist)]
-    "down" [0, dist]))
+    :forward [dist 0]
+    :up [0, (* -1 dist)]
+    :down [0, dist]))
 
 (defn split [line]
   (let [[dir dist] (str/split line #" ")]
-       [dir (parse-int dist)]))
+    [(keyword dir) (parse-int dist)]))
 
 (defn move-1
   "move the position by the change"
@@ -27,15 +27,16 @@
    file->lines
    (map split)
    (map #(apply translate %))
-   (reduce move-1 [0 0])))
+   (reduce move-1 [0 0])
+   (reduce *)))
 
 (defn move-2
   [current [dir dist]]
   (let [[x depth aim] current]
     (case dir
-      "forward" [(+ x dist) (+ depth (* aim dist)) aim]
-      "down" [x depth (+ aim dist)]
-      "up" [x depth (- aim dist)])))
+      :forward [(+ x dist) (+ depth (* aim dist)) aim]
+      :down [x depth (+ aim dist)]
+      :up [x depth (- aim dist)])))
 
 (defn part-2 []
   (->>
@@ -44,9 +45,7 @@
    (map split)
    (reduce move-2 [0 0 0])
    (take 2)
-   (reduce *)
-   )
-  )
+   (reduce *)))
 
 (comment
   (part-1);; => 1654760
