@@ -5,13 +5,16 @@
 (defn translate
   "turn [dir dist] into an [x y] offset"
   [dir dist]
-  (let [d (parse-int dist)]
-    (case dir
-      "forward" [d 0]
-      "up" [0, (* -1 d)]
-      "down" [0, d])))
+  (case dir
+    "forward" [dist 0]
+    "up" [0, (* -1 dist)]
+    "down" [0, dist]))
 
-(defn move
+(defn split [line]
+  (let [[dir dist] (str/split line #" ")]
+       [dir (parse-int dist)]))
+
+(defn move-1
   "move the position by the change"
   [position change]
   (let [[px pd] position
@@ -22,11 +25,32 @@
   (->>
    "src/aoc2021/day_02.txt"
    file->lines
-   (map #(str/split % #" "))
+   (map split)
    (map #(apply translate %))
-   (reduce move [0 0])))
+   (reduce move-1 [0 0])))
+
+(defn move-2
+  [current [dir dist]]
+  (let [[x depth aim] current]
+    (case dir
+      "forward" [(+ x dist) (+ depth (* aim dist)) aim]
+      "down" [x depth (+ aim dist)]
+      "up" [x depth (- aim dist)])))
+
+(defn part-2 []
+  (->>
+   "src/aoc2021/day_02.txt"
+   file->lines
+   (map split)
+   (reduce move-2 [0 0 0])
+   (take 2)
+   (reduce *)
+   )
+  )
 
 (comment
-  (->> (part-1) (reduce *));; => 1654760
+  (part-1);; => 1654760
+
+  (part-2);; => 1956047400
 
   .)
