@@ -10,7 +10,9 @@
     :up [0, (* -1 dist)]
     :down [0, dist]))
 
-(defn split [line]
+(defn split
+  "split a line into direction keyword and numeric distance"
+  [line]
   (let [[dir dist] (str/split line #" ")]
     [(keyword dir) (parse-int dist)]))
 
@@ -31,6 +33,7 @@
    (reduce *)))
 
 (defn move-2
+  "apply dir and dist change to current [x depth aim]"
   [current [dir dist]]
   (let [[x depth aim] current]
     (case dir
