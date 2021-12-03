@@ -2,60 +2,49 @@
   (:require [aoc2021.core :refer :all]
             [clojure.string :as str]))
 
-(defn most-common-bit [bit ints]
-  (if
-   (first
-    (last
-     (sort-by
-      #(vector (count (second %)) (not (first %)))
-      (group-by #(bit-test % bit) ints))))
-    1
-    0))
-
-(defn part-1 []
-  (let [lines (->>
-               "src/aoc2021/day_03.txt"
-               file->lines)
-        ints (map #(parse-int % 2) lines)
-        width (count (seq  (first lines)))
-        sum (parse-int (str/join (repeat width 1)) 2)
-        most-common-bits (map #(most-common-bit (- width 1 %) ints) (range width))
-        gamma-rate (parse-int (str/join most-common-bits) 2)
-        epsilon-rate (- sum gamma-rate)]
-    (* gamma-rate epsilon-rate)))
-
-(defn to-bits [w i]
-  (->> w range (mapv #(if (bit-test i (- w % 1)) 1 0))))
+(defn line->bits [cs]
+  (map (comp parse-int str) (seq cs)))
 
 (defn bits->int [bits]
   (-> bits str/join (parse-int 2)))
 
 (defn most-common-pos [pos bits]
   (first
-   (last
-    (sort-by
-     #(vector (count (second %)) (first %)) ;; sort by frequency then bit
-     (group-by #(nth % pos) bits)))))
+    (last
+      (sort-by
+        #(vector (count (second %)) (first %)) ;; sort by frequency then bit
+        (group-by #(nth % pos) bits)))))
 
 (def least-common-pos (comp {0 1 1 0} most-common-pos))
+
+(defn part-1 []
+  (let [lines (->>
+               "src/aoc2021/day_03.txt"
+               file->lines)
+        bits (map line->bits lines)
+        width (count (seq  (first lines)))
+        most-common-bits (map #(most-common-pos % bits) (range width))
+        least-common-bits (map #(least-common-pos % bits) (range width))
+        gamma-rate (bits->int most-common-bits)
+        epsilon-rate (bits->int least-common-bits)]
+    (* gamma-rate epsilon-rate)))
 
 (defn search [criteria-fn pos candidates]
   (if (> 2 (count candidates))
     candidates
     (let [criteria (mapv #(criteria-fn % candidates)
                          (range (count (first candidates))))]
-      (search criteria-fn (inc pos)
+      (recur criteria-fn (inc pos)
               (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
 
 (defn part-2 []
   (let [lines (->>
                "src/aoc2021/day_03.txt"
                file->lines)
-        ints (map #(parse-int % 2) lines)
-        width (count (seq  (first lines)))
-        as-bits (map #(to-bits width %) ints)
-        o2-gen-rating (bits->int (first (search most-common-pos 0 as-bits)))
-        co2-scrubber-rating (bits->int (first (search least-common-pos 0 as-bits)))]
+        bits (map line->bits lines)
+        width (count (first bits))
+        o2-gen-rating (bits->int (first (search most-common-pos 0 bits)))
+        co2-scrubber-rating (bits->int (first (search least-common-pos 0 bits)))]
     (* o2-gen-rating co2-scrubber-rating)))
 
 (comment
