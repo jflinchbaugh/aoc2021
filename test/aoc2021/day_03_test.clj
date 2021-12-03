@@ -1,4 +1,4 @@
-(ns aoc2021.day-03
+(ns aoc2021.day-03-test
   (:require [aoc2021.day-03 :refer :all]
             [clojure.test :refer :all]))
 
