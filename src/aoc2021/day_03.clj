@@ -10,17 +10,17 @@
 
 (defn most-common-pos [pos bits]
   (first
-    (last
-      (sort-by
-        #(vector (count (second %)) (first %)) ;; sort by frequency then bit
-        (group-by #(nth % pos) bits)))))
+   (last
+    (sort-by
+     #(vector (count (second %)) (first %)) ;; sort by frequency then bit
+     (group-by #(nth % pos) bits)))))
 
 (def least-common-pos (comp {0 1 1 0} most-common-pos))
 
 (defn part-1 []
   (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
-        width (count (seq  (first lines)))
+        width (count (seq (first lines)))
         most-common-bits (map #(most-common-pos % bits) (range width))
         least-common-bits (map #(least-common-pos % bits) (range width))
         gamma-rate (bits->int most-common-bits)
@@ -30,15 +30,15 @@
 (defn search [criteria-fn pos candidates]
   (if (> 2 (count candidates))
     candidates
-    (let [criteria (mapv #(criteria-fn % candidates)
-                         (range (count (first candidates))))]
+    (let [width (count (first candidates))
+          criteria (mapv #(criteria-fn % candidates)
+                         (range width))]
       (recur criteria-fn (inc pos)
-              (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
+             (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
 
 (defn part-2 []
   (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
-        width (count (first bits))
         o2-gen-rating (bits->int (first (search most-common-pos 0 bits)))
         co2-scrubber-rating (bits->int (first (search least-common-pos 0 bits)))]
     (* o2-gen-rating co2-scrubber-rating)))
