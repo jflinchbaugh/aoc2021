@@ -17,12 +17,15 @@
 
 (def least-common-pos (comp {0 1 1 0} most-common-pos))
 
+(defn common-bits [common-fn bits]
+  (map #(common-fn % bits) (range (count (first bits)))))
+
 (defn part-1 []
   (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
-        width (count (seq (first lines)))
-        most-common-bits (map #(most-common-pos % bits) (range width))
-        least-common-bits (map #(least-common-pos % bits) (range width))
+        width (count (first bits))
+        most-common-bits (common-bits most-common-pos bits)
+        least-common-bits (common-bits least-common-pos bits)
         gamma-rate (bits->int most-common-bits)
         epsilon-rate (bits->int least-common-bits)]
     (* gamma-rate epsilon-rate)))

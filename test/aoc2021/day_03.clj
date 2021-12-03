@@ -42,10 +42,24 @@
 
 (deftest test-search
   (testing "search"
-    (are [found criteria-fn candidates]
+    (are [found criteria-fn candidates desc]
          (= found (search criteria-fn candidates))
-      [[0]]   (constantly 1) [[0]]
-      [[1]]   (constantly 1) [[1]]
-      [[1]]   (constantly 1) [[0] [1]]
-      [[1 1]] (constantly 1) [[0 1] [1 0] [1 1]]
-      [[0 1]] (constantly 0) [[0 1] [1 0] [1 1]])))
+      [[0]]   (constantly 1) [[0]] "only 1 candidate"
+      [[1]]   (constantly 1) [[1]] "only 1 candidate"
+      [[1]]   (constantly 1) [[0] [1]] "first match"
+      [[1 1]] (constantly 1) [[0 1] [1 0] [1 1]] "progress position"
+      [[0 1]] (constantly 0) [[0 1] [1 0] [1 1]]
+          "only needed to search by first position"
+      )))
+
+(deftest test-common-bits
+  (testing "common-bits"
+    (are [expected common-fn bits-list]
+        (= expected (common-bits common-fn bits-list))
+      [1]   (constantly 1) [[0]]
+      [1]   (constantly 1) [[1]]
+      [1]   (constantly 1) [[0] [1]]
+      [1 1] (constantly 1) [[0 1] [1 0] [1 1]]
+      [0 0] (constantly 0) [[0 1] [1 0] [1 1]]
+      [1 0] most-common-pos [[1 0] [1 0] [0 1]]
+      )))
