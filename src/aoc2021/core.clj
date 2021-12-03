@@ -18,7 +18,7 @@
 (defn avg
   "average of values in a list"
   [coll]
-  (when (not (empty? coll))
+  (when (seq coll)
     (/ (reduce + coll) (count coll))))
 
 (defn abs

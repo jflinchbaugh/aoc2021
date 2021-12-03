@@ -18,9 +18,7 @@
 (def least-common-pos (comp {0 1 1 0} most-common-pos))
 
 (defn part-1 []
-  (let [lines (->>
-               "src/aoc2021/day_03.txt"
-               file->lines)
+  (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
         width (count (seq  (first lines)))
         most-common-bits (map #(most-common-pos % bits) (range width))
@@ -38,9 +36,7 @@
               (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
 
 (defn part-2 []
-  (let [lines (->>
-               "src/aoc2021/day_03.txt"
-               file->lines)
+  (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
         width (count (first bits))
         o2-gen-rating (bits->int (first (search most-common-pos 0 bits)))
