@@ -32,10 +32,10 @@
 
 (defn most-common-pos [pos bits]
   (first
-    (last
-      (sort-by
-        #(vector (count (second %)) (first %)) ;; sort by frequency then bit
-        (group-by #(nth % pos) bits)))))
+   (last
+    (sort-by
+     #(vector (count (second %)) (first %)) ;; sort by frequency then bit
+     (group-by #(nth % pos) bits)))))
 
 (def least-common-pos (comp {0 1 1 0} most-common-pos))
 
@@ -43,30 +43,25 @@
   (if (> 2 (count candidates))
     candidates
     (let [criteria (mapv #(criteria-fn % candidates)
-                     (range (count (first candidates))))]
+                         (range (count (first candidates))))]
       (search criteria-fn (inc pos)
-        (filter #(= (nth % pos) (nth criteria pos)) candidates))))
-  )
+              (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
 
 (defn part-2 []
   (let [lines (->>
-                "src/aoc2021/day_03.txt"
-                file->lines)
+               "src/aoc2021/day_03.txt"
+               file->lines)
         ints (map #(parse-int % 2) lines)
         width (count (seq  (first lines)))
         as-bits (map #(to-bits width %) ints)
         o2-gen-rating (bits->int (first (search most-common-pos 0 as-bits)))
-        co2-scrubber-rating (bits->int (first (search least-common-pos 0 as-bits)))
-        ]
-    (* o2-gen-rating co2-scrubber-rating)
-    )
-  )
+        co2-scrubber-rating (bits->int (first (search least-common-pos 0 as-bits)))]
+    (* o2-gen-rating co2-scrubber-rating)))
 
 (comment
 
   (part-1);; => 3242606
 
   (part-2);; => 4856080
-
 
   .)
