@@ -27,20 +27,23 @@
         epsilon-rate (bits->int least-common-bits)]
     (* gamma-rate epsilon-rate)))
 
-(defn search [criteria-fn pos candidates]
-  (if (> 2 (count candidates))
-    candidates
-    (let [width (count (first candidates))
-          criteria (mapv #(criteria-fn % candidates)
-                         (range width))]
-      (recur criteria-fn (inc pos)
-             (filter #(= (nth % pos) (nth criteria pos)) candidates)))))
+(defn search
+  ([criteria-fn candidates]
+   (search criteria-fn 0 candidates))
+  ([criteria-fn pos candidates]
+   (if (> 2 (count candidates))
+     candidates
+     (let [width (count (first candidates))
+           criteria (mapv #(criteria-fn % candidates)
+                      (range width))]
+       (recur criteria-fn (inc pos)
+         (filter #(= (nth % pos) (nth criteria pos)) candidates))))))
 
 (defn part-2 []
   (let [lines (file->lines "src/aoc2021/day_03.txt")
         bits (map line->bits lines)
-        o2-gen-rating (bits->int (first (search most-common-pos 0 bits)))
-        co2-scrubber-rating (bits->int (first (search least-common-pos 0 bits)))]
+        o2-gen-rating (bits->int (first (search most-common-pos bits)))
+        co2-scrubber-rating (bits->int (first (search least-common-pos bits)))]
     (* o2-gen-rating co2-scrubber-rating)))
 
 (comment
