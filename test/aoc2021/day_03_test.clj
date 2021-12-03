@@ -63,3 +63,8 @@
       [0 0] (constantly 0) [[0 1] [1 0] [1 1]]
       [1 0] most-common-pos [[1 0] [1 0] [0 1]]
       )))
+
+(deftest test-results
+  (testing "results"
+    (is (= 3242606 (part-1)))
+    (is (= 4856080 (part-2)))))
