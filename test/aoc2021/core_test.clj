@@ -26,3 +26,9 @@
 (deftest test-file->lines
   (testing "file->lines"
     (is (= ["1" "2"] (file->lines "test/aoc2021/file.txt")))))
+
+(deftest test-all-range
+  (are [expected actual] (= expected actual)
+    [0] (all-range 0 0)
+    [0 1] (all-range 0 1)
+    [1 0] (all-range 1 0)))

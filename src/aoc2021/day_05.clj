@@ -20,13 +20,6 @@
 (def get-x first)
 (def get-y second)
 
-(defn all-range
-  "produce an inclusive range in either direction"
-  [s e]
-  (if (<= s e)
-    (range s (inc e))
-    (reverse (range e (inc s)))))
-
 (defn expand-segment [segment]
   (let [[[x1 y1] [x2 y2]] segment]
     (or 

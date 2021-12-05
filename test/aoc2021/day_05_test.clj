@@ -2,12 +2,6 @@
   (:require [aoc2021.day-05 :refer :all]
             [clojure.test :refer :all]))
 
-(deftest test-all-range
-  (are [expected actual] (= expected actual)
-    [0] (all-range 0 0)
-    [0 1] (all-range 0 1)
-    [1 0] (all-range 1 0)))
-
 (deftest test-horizontal?
   (are [expected segment] (= expected (horizontal? segment))
     true [[0 1] [2 1]]

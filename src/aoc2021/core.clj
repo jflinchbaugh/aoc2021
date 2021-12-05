@@ -34,3 +34,10 @@
     str/trim
     str/split-lines
     (map str/trim)))
+
+(defn all-range
+  "produce an inclusive range in either direction"
+  [s e]
+  (if (<= s e)
+    (range s (inc e))
+    (reverse (range e (inc s)))))
