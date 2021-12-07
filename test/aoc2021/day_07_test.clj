@@ -7,5 +7,3 @@
 
 (deftest test-part-2
   (is (= 97164301 (part-2))))
-
-
