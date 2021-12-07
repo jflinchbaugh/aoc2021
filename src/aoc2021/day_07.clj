@@ -10,7 +10,7 @@
                     (str/split #","))
                    (map (comp parse-int str/trim))
                    sort)
-        target-pos (nth positions (/ (count positions) 2))]
+        target-pos (median positions)]
     (->>
      positions
      (map #(abs (- % target-pos)))

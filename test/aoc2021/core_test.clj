@@ -32,3 +32,15 @@
     [0] (all-range 0 0)
     [0 1] (all-range 0 1)
     [1 0] (all-range 1 0)))
+
+(deftest test-median
+  (are [expected col] (= expected (median (shuffle col)))
+    nil []
+    0 [0]
+    1/2 [0 1]
+    1 [0 1 2]
+    1 [0 1 1 2]
+    1 [0 1 15]
+    1 [0 1 1 15]
+    3/2 [0 1 2 15]
+    ))

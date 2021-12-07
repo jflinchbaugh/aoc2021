@@ -41,3 +41,11 @@
   (if (<= s e)
     (range s (inc e))
     (reverse (range e (inc s)))))
+
+(defn median [col]
+  (let [sorted (sort col)
+        size (count sorted)]
+    (cond
+      (zero? size) nil
+      (odd? size) (nth sorted (dec (/ (inc size) 2)))
+      :else (avg [(nth sorted (dec (int (/ size 2)))) (nth sorted (int (/ size 2)))]))))
