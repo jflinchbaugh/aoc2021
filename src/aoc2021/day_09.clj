@@ -13,26 +13,48 @@
     (cell grid (dec row) col)
     (cell grid (inc row) col)]))
 
+(defn find-low-points [grid]
+  (let [length (count grid)
+        width (count (first grid))]
+    (->>
+      (for [row (range 100)
+            col (range 100)]
+        (let [point (cell grid row col)
+              surroundings (surroundings grid row col)]
+          (when (every? #(< (first point) (first %)) surroundings)
+            point)))
+      (remove nil?)
+      )))
+
 (defn part-1 []
   (let [grid (->>
               "src/aoc2021/day_09.txt"
               file->lines
-              (mapv #(mapv (comp parse-int str) %)))
-        length (count grid)
-        width (count (first grid))]
+              (mapv #(mapv (comp parse-int str) %)))]
     (->>
-     (for [row (range 100)
-           col (range 100)]
-       (let [point (first (cell grid row col))
-             surroundings (map first (surroundings grid row col))]
-         (when (every? #(< point %) surroundings)
-           point)))
-     (remove nil?)
+     grid
+     find-low-points
+     (map first)
      (map inc)
      (reduce +))))
+
+(defn part-2 []
+  (let [grid (->>
+               "src/aoc2021/day_09.txt"
+               file->lines
+               (mapv #(mapv (comp parse-int str) %)))]
+    (->>
+      grid
+      find-low-points)
+    )
+
+  )
+
 
 (comment
 
   (part-1);; => 496
+
+  (part-2)
 
   .)
