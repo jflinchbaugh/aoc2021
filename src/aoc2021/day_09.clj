@@ -2,7 +2,7 @@
   (:require [aoc2021.core :refer :all]))
 
 (defn cell [grid row col]
-  (try (nth (nth grid row) col)
+  (try [(nth (nth grid row) col) row col]
        (catch IndexOutOfBoundsException _ nil)))
 
 (defn surroundings [grid row col]
@@ -23,8 +23,8 @@
     (->>
      (for [row (range 100)
            col (range 100)]
-       (let [point (cell grid row col)
-             surroundings (surroundings grid row col)]
+       (let [point (first (cell grid row col))
+             surroundings (map first (surroundings grid row col))]
          (when (every? #(< point %) surroundings)
            point)))
      (remove nil?)
