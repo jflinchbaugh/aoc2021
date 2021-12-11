@@ -4,3 +4,6 @@
 
 (deftest test-part-1
   (is (= 319329 (part-1))))
+
+(deftest test-part-2
+  (is (= 3515583998 (part-2))))
