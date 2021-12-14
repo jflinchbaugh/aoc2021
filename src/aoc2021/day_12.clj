@@ -35,9 +35,7 @@
   ([valid-path? cave-map]
    (walk valid-path? cave-map [["start"]]))
   ([valid-path? cave-map paths]
-   (prn (count paths))
-   (let [_ 0 #_(prn (count paths))
-         next-paths (->>
+   (let [next-paths (->>
                      paths
                      (mapcat (fn [path]
                                (if (= "end" (last path))
