@@ -26,14 +26,20 @@
   [n]
   (Math/abs n))
 
+(defn str->lines
+  "parse a string into trimmed lines"
+  [str-data]
+  (->> str-data
+    str/trim
+    str/split-lines
+    (map str/trim)))
+
 (defn file->lines
   "read a local named file and parse it into trimmed lines"
   [file-name]
   (->> file-name
     slurp
-    str/trim
-    str/split-lines
-    (map str/trim)))
+    str->lines))
 
 (defn all-range
   "produce an inclusive range in either direction"
