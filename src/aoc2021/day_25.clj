@@ -49,14 +49,21 @@
     (map move-row-south)
     rows->columns))
 
+(defn move-both [rows]
+  (->> rows move-east move-south))
+
 (defn part-1 []
-  (->> "src/aoc2021/day_25_sample.txt"
+  (->> "src/aoc2021/day_25.txt"
        file->lines
-       move-south))
+       (iterate move-both)
+       (partition 2 1)
+       (take-while (fn [[p n]] (not= p n)))
+       count
+       inc))
 
 (comment
 
-  (part-1)
+  (part-1);; => 530
 
 
   .)
